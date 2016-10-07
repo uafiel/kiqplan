@@ -55,23 +55,23 @@ public class UserActivitiesTests extends UserActivitiesEndpoint {
   */
     @Test
     public void addUserActivity() {
-        given()
-                .when()
-                .header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, user.secret))
-                .contentType(ContentType.TEXT)
-                .body(measurementEndpoint.buildMeasurumentBody(UserMeasurementEndpoint.MeasurementType.WEIGHT, "87", "2016-09-04T13:00:42", "kg"))
-                .post("users/me/measurements/")
-                .then()
-                .statusCode(201);
+        given().
+            header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, user.secret)).
+            contentType(ContentType.TEXT).
+            body(measurementEndpoint.buildMeasurumentBody(UserMeasurementEndpoint.MeasurementType.WEIGHT, "87", "2016-09-04T13:00:42", "kg")).
+        when().
+            post("users/me/measurements/").
+        then().
+            statusCode(201);
 
-        given()
-                .when()
-                .header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, user.secret))
-                .contentType(ContentType.TEXT)
-                .body(buildActivityBody("1", "2016-09-05T11:00:00", "2016-09-05T15:00:00", "5"))
-                .post("users/me/activities/?override=false")
-                .then()
-                .statusCode(201);
+        given().
+            header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, user.secret)).
+            contentType(ContentType.TEXT).
+            body(buildActivityBody("1", "2016-09-05T11:00:00", "2016-09-05T15:00:00", "5")).
+        when().
+            post("users/me/activities/?override=false").
+        then().
+            statusCode(201);
 
     }
 
@@ -87,17 +87,17 @@ public class UserActivitiesTests extends UserActivitiesEndpoint {
     @Test
     public void addUserActivityWithNoWeightSet() {
 
-        given()
-                .when()
-                .header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, user.secret))
-                .contentType(ContentType.TEXT)
-                .body(buildActivityBody("1", "2016-09-05T11:00:00", "2016-09-05T15:00:00", "5"))
-                .post("users/me/activities/?override=false")
-                .then()
-                .statusCode(400)
-                .assertThat()
-                .body("meta.error.message", containsString("No weight set in the system"))
-                .body("meta.error.user_message", containsString("Please log your weight"));
+        given().
+            header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, user.secret)).
+            contentType(ContentType.TEXT).
+            body(buildActivityBody("1", "2016-09-05T11:00:00", "2016-09-05T15:00:00", "5")).
+        when().
+            post("users/me/activities/?override=false").
+        then().
+            statusCode(400).
+            assertThat().
+            body("meta.error.message", containsString("No weight set in the system")).
+            body("meta.error.user_message", containsString("Please log your weight"));
 
     }
 
@@ -113,16 +113,16 @@ public class UserActivitiesTests extends UserActivitiesEndpoint {
     @Test
     public void addUserActivityWithInvalidUserToken() {
 
-        given()
-                .when()
-                .header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, "invalid", user.secret))
-                .contentType(ContentType.TEXT)
-                .body(buildActivityBody("1", "2016-09-05T11:00:00", "2016-09-05T15:00:00", "5"))
-                .post("users/me/activities/?override=false")
-                .then()
-                .statusCode(400)
-                .assertThat()
-                .body("meta.error.message", containsString("oauth_problem=token_rejected"));
+        given().
+            header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, "invalid", user.secret)).
+            contentType(ContentType.TEXT).
+            body(buildActivityBody("1", "2016-09-05T11:00:00", "2016-09-05T15:00:00", "5")).
+        when().
+            post("users/me/activities/?override=false").
+        then().
+            statusCode(400).
+            assertThat().
+            body("meta.error.message", containsString("oauth_problem=token_rejected"));
 
 
     }
@@ -138,16 +138,16 @@ public class UserActivitiesTests extends UserActivitiesEndpoint {
   */
     @Test
     public void addUserActivityWithInvalidUserSecret() {
-        given()
-                .when()
-                .header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, "invalid"))
-                .contentType(ContentType.TEXT)
-                .body(buildActivityBody("1", "2016-09-05T11:00:00", "2016-09-05T15:00:00", "5"))
-                .post("users/me/activities/?override=false")
-                .then()
-                .statusCode(400)
-                .assertThat()
-                .body("meta.error.message", anything("oauth_problem=signature_invalid"));
+        given().
+            header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, "invalid")).
+            contentType(ContentType.TEXT).
+            body(buildActivityBody("1", "2016-09-05T11:00:00", "2016-09-05T15:00:00", "5")).
+        when().
+            post("users/me/activities/?override=false").
+        then().
+            statusCode(400).
+            assertThat().
+            body("meta.error.message", anything("oauth_problem=signature_invalid"));
     }
 
     /* Scenario: Attempt to duplicate activity
@@ -161,35 +161,35 @@ public class UserActivitiesTests extends UserActivitiesEndpoint {
  */
     @Test
     public void addDuplicateUserActivity() {
-        given()
-                .when()
-                .header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, user.secret))
-                .contentType(ContentType.TEXT)
-                .body(measurementEndpoint.buildMeasurumentBody(UserMeasurementEndpoint.MeasurementType.WEIGHT, "87", "2016-09-04T13:00:42", "kg"))
-                .post("users/me/measurements/")
-                .then()
-                .statusCode(201);
+        given().
+            header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, user.secret)).
+            contentType(ContentType.TEXT).
+            body(measurementEndpoint.buildMeasurumentBody(UserMeasurementEndpoint.MeasurementType.WEIGHT, "87", "2016-09-04T13:00:42", "kg")).
+        when().
+            post("users/me/measurements/").
+        then().
+            statusCode(201);
 
-        given()
-                .when()
-                .header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, user.secret))
-                .contentType(ContentType.TEXT)
-                .body(buildActivityBody("1", "2016-09-05T11:00:00", "2016-09-05T15:00:00", "5"))
-                .post("users/me/activities/?override=false")
-                .then()
-                .statusCode(201);
+        given().
+            header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, user.secret)).
+            contentType(ContentType.TEXT).
+            body(buildActivityBody("1", "2016-09-05T11:00:00", "2016-09-05T15:00:00", "5")).
+        when().
+            post("users/me/activities/?override=false").
+        then().
+            statusCode(201);
 
-        given()
-                .when()
-                .header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, user.secret))
-                .contentType(ContentType.TEXT)
-                .body(buildActivityBody("1", "2016-09-05T11:00:00", "2016-09-05T15:00:00", "5"))
-                .post("users/me/activities/?override=false")
-                .then()
-                .statusCode(400)
-                .assertThat()
-                .body("meta.error.message", containsString("An activity already exists in the specified date range"))
-                .body("meta.error.user_message", containsString("You have already added an activity for the time selected. Please edit time of activity and then try adding the activity again."));
+        given().
+            header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, user.secret)).
+            contentType(ContentType.TEXT).
+            body(buildActivityBody("1", "2016-09-05T11:00:00", "2016-09-05T15:00:00", "5")).
+        when().
+            post("users/me/activities/?override=false").
+        then().
+            statusCode(400).
+            assertThat().
+            body("meta.error.message", containsString("An activity already exists in the specified date range")).
+            body("meta.error.user_message", containsString("You have already added an activity for the time selected. Please edit time of activity and then try adding the activity again."));
     }
 
 
@@ -203,31 +203,30 @@ public class UserActivitiesTests extends UserActivitiesEndpoint {
  */
     @Test
     public void addActivityWithEndDateBeforeStartDate() {
-        given()
-                .when()
-                .header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, user.secret))
-                .contentType(ContentType.TEXT)
-                .body(measurementEndpoint.buildMeasurumentBody(UserMeasurementEndpoint.MeasurementType.WEIGHT, "87", "2016-09-04T13:00:42", "kg"))
-                .post("users/me/measurements/")
-                .then()
-                .statusCode(201);
+        given().
+            header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, user.secret)).
+            contentType(ContentType.TEXT).
+            body(measurementEndpoint.buildMeasurumentBody(UserMeasurementEndpoint.MeasurementType.WEIGHT, "87", "2016-09-04T13:00:42", "kg")).
+        when().
+            post("users/me/measurements/").
+        then().
+            statusCode(201);
 
         String startDate = "2016-09-05T11:00:00";
         String endDate = "2016-09-05T10:59:59";
 
-        given()
-                .when()
-                .header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, user.secret))
-                .contentType(ContentType.TEXT)
-                .body(buildActivityBody("1", startDate, endDate, "5"))
-                .post("users/me/activities/?override=false")
-                .then()
-                .statusCode(400)
-                .assertThat()
-                .body("meta.error.message", containsString("end_date_time must be greater than start_date_time"));
+        given().
+            header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, user.secret)).
+            contentType(ContentType.TEXT).
+            body(buildActivityBody("1", startDate, endDate, "5")).
+        when().
+            post("users/me/activities/?override=false").
+        then().
+            statusCode(400).
+            assertThat().
+            body("meta.error.message", containsString("end_date_time must be greater than start_date_time"));
 
     }
-
 
 
     /* Scenario: Attempt to add user activity using invalid activity_id
@@ -240,32 +239,29 @@ public class UserActivitiesTests extends UserActivitiesEndpoint {
  */
     @Test
     public void addActivityInvalidActivityId() {
-        given()
-                .when()
-                .header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, user.secret))
-                .contentType(ContentType.TEXT)
-                .body(measurementEndpoint.buildMeasurumentBody(UserMeasurementEndpoint.MeasurementType.WEIGHT, "87", "2016-09-04T13:00:42", "kg"))
-                .post("users/me/measurements/")
-                .then()
-                .statusCode(201);
+        given().
+            header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, user.secret)).
+            contentType(ContentType.TEXT).
+            body(measurementEndpoint.buildMeasurumentBody(UserMeasurementEndpoint.MeasurementType.WEIGHT, "87", "2016-09-04T13:00:42", "kg")).
+        when().
+            post("users/me/measurements/").
+        then().
+            statusCode(201);
 
         String invalidId = "id";
 
-        given()
-                .when()
-                .header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, user.secret))
-                .contentType(ContentType.TEXT)
-                .body(buildActivityBody(invalidId, "2016-09-04T13:00:42", "2016-09-04T19:00:42", "5"))
-                .post("users/me/activities/?override=false")
-                .then()
-                .statusCode(400)
-                .assertThat()
-                .body("meta.error.message", containsString("Missing or invalid request body data"));
+        given().
+            header("authorization", buildHeaderWithUserTokens(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD, user.token, user.secret)).
+            contentType(ContentType.TEXT).
+            body(buildActivityBody(invalidId, "2016-09-04T13:00:42", "2016-09-04T19:00:42", "5")).
+        when().
+            post("users/me/activities/?override=false").
+        then().
+            statusCode(400).
+            assertThat().
+            body("meta.error.message", containsString("Missing or invalid request body data"));
 
     }
-
-
-
 
 
 }

@@ -29,14 +29,14 @@ public final class CreateUserTests extends CreateUserEndpoint {
     @Test
     public void createNewUser() {
 
-        given()
-                .when()
-                .header("authorization", buildHeader(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD))
-                .contentType(ContentType.TEXT)
-                .body(buildUserBody(createUniqueEmail(), "", "Ivan", "Mitkov", ""))
-                .post("users")
-                .then()
-                .statusCode(201);
+        given().
+            header("authorization", buildHeader(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD)).
+            contentType(ContentType.TEXT).
+            body(buildUserBody(createUniqueEmail(), "", "Ivan", "Mitkov", "")).
+        when().
+            post("users").
+        then().
+            statusCode(201);
     }
 
     /* Scenario: Register a new user
@@ -51,26 +51,25 @@ public final class CreateUserTests extends CreateUserEndpoint {
 
         String notUniqueEmail = createUniqueEmail();
 
+        given().
+            header("authorization", buildHeader(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD)).
+            contentType(ContentType.TEXT).
+            body(buildUserBody(createUniqueEmail(), "", "Ivan", "Mitkov", "")).
+        when().
+            post("users").
+            then().
+            statusCode(201);
 
-        given()
-                .when()
-                .header("authorization", buildHeader(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD))
-                .contentType(ContentType.TEXT)
-                .body(buildUserBody(createUniqueEmail(), "", "Ivan", "Mitkov", ""))
-                .post("users")
-                .then()
-                .statusCode(201);
-
-        given()
-                .when()
-                .header("authorization", buildHeader(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD))
-                .contentType(ContentType.TEXT)
-                .body(buildUserBody(notUniqueEmail, "", "Ivan", "Mitkov", ""))
-                .post("users")
-                .then()
-                .statusCode(400)
-                .assertThat()
-                .body("meta.error.message", containsString("email not unique"));
+        given().
+            header("authorization", buildHeader(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD)).
+            contentType(ContentType.TEXT).
+            body(buildUserBody(notUniqueEmail, "", "Ivan", "Mitkov", "")).
+        when().
+            post("users").
+        then().
+            statusCode(400).
+            assertThat().
+            body("meta.error.message", containsString("email not unique"));
     }
 
     /* Scenario: Register a new user
@@ -84,16 +83,16 @@ public final class CreateUserTests extends CreateUserEndpoint {
     public void createUserWithInvalidEmail() {
         String uniqueEmailButInvalid = "email" + (System.currentTimeMillis() / 1000);
 
-        given()
-                .when()
-                .header("authorization", buildHeader(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD))
-                .contentType(ContentType.TEXT)
-                .body(buildUserBody(uniqueEmailButInvalid, "", "Ivan", "Mitkov", ""))
-                .post("users")
-                .then()
-                .statusCode(400)
-                .assertThat()
-                .body("meta.error.message", containsString("Invalid 'email' field"));
+        given().
+            header("authorization", buildHeader(CONSUMER_KEY, CONSUMER_SECRET, SIGNATURE_METHOD)).
+            contentType(ContentType.TEXT).
+            body(buildUserBody(uniqueEmailButInvalid, "", "Ivan", "Mitkov", "")).
+        when().
+            post("users").
+        then().
+            statusCode(400).
+            assertThat().
+            body("meta.error.message", containsString("Invalid 'email' field"));
     }
 
 
