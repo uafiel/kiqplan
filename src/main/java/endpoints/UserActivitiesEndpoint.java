@@ -1,6 +1,6 @@
-package Endpoints;
+package endpoints;
 
-import Utils.BaseClass;
+import utils.BaseClass;
 
 public class UserActivitiesEndpoint extends BaseClass {
 
